@@ -15,14 +15,14 @@ export default class ControllerUnit extends React.Component{
     }
     render(){
 
-        let controllerClassName='controller-unit';
+        let controllerUnitClassName='controller-unit';
         if(this.props.arrange.isCenter){
-            controllerClassName+='is-center';
-            controllerClassName+=this.props.arrange.isInverse?' is-inverse':'';
+            controllerUnitClassName+=' is-center';
+            controllerUnitClassName+=this.props.arrange.isInverse?' is-inverse':'';
         }
 
         return (
-            <span className={controllerClassName} onClick={this.handleClick.bind(this)}>
+            <span className={controllerUnitClassName} onClick={this.handleClick.bind(this)}>
 
             </span>
         );

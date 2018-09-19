@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import logo from './logo.svg';
 import './Image.scss';
 import ImageDatas from './data/imageDatas';
 import ImageFigure from './components/ImageFigure';
@@ -20,6 +19,7 @@ export default class App extends Component {
     constructor(props){
         super(props);
         this.state={
+            constant:this.Constant,
             imgsArrangeArr: [
                 /*{
                     pos:{
@@ -59,11 +59,14 @@ export default class App extends Component {
                 x:[this.halfStageW-this.imgW,this.halfStageW],
             }
         };
-        this.rearrange(0);
+        this.currentIndex=0;
+        this.rearrange();
+
     }
 
 
-    rearrange(centerIndex){
+    rearrange(){
+        let centerIndex=this.currentIndex;
         let imgsArrangeArr=this.state.imgsArrangeArr;
         let l_constant=this.Constant;
         let centerPos=l_constant.centerPos;
@@ -93,6 +96,7 @@ export default class App extends Component {
            };
            value.rotate=this.getDegRandom(30);
            value.isCenter=false;
+           value.isInverse=false;
         });
         //left and right
         for (let i = 0, j = imgsArrangeArr.length, k = j / 2; i < j; i ++) {
@@ -108,6 +112,7 @@ export default class App extends Component {
             };
             imgsArrangeArr[i].rotate=this.getDegRandom(30);
             imgsArrangeArr[i].isCenter=false;
+            imgsArrangeArr[i].isInverse=false;
         }
         if(imgsArrangeTopArr&&imgsArrangeTopArr[0]){
             imgsArrangeArr.splice(topImgSpliceIndex,0,imgsArrangeTopArr[0]);
@@ -138,7 +143,8 @@ export default class App extends Component {
     //居中对应index的图片
     centerImg(index){
         return ()=>{
-          this.rearrange(index);
+            this.currentIndex=index;
+            this.rearrange();
         };
     }
 
@@ -158,6 +164,7 @@ export default class App extends Component {
                 }
             }
             imgFigures.push(<ImageFigure
+                key={index.toString()}
                 data={value}
                 ref={'imgFigure'+index}
                 arrange={this.state.imgsArrangeArr[index]}
@@ -165,6 +172,7 @@ export default class App extends Component {
                 center={this.centerImg(index)}
             />);
             controllerUnits.push(<ControllerUnit
+                key={index.toString()}
                 arrange={this.state.imgsArrangeArr[index]}
                 inverse={this.inverse(index)}
                 center={this.centerImg(index)}
